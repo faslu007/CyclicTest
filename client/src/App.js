@@ -3,8 +3,10 @@ import './App.css';
 import {useEffect, useState} from "react"
 import axios from "axios"
 
+
 function App() {
   const [data, setData] = useState([]);
+  const [email, setEmail] = useState('')
 
   useEffect(()=>{
 
@@ -19,7 +21,26 @@ function App() {
     } catch (error) {
       console.error(error)
     }
+  };
+
+  async function sendEmail() {
+    try {
+      const { data } = await axios.post(
+        '/api/sendemail',
+        { "email": email }, // wrap the email in an object
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
   }
+  
+
 
   return (
     <div className="App">
@@ -36,6 +57,9 @@ function App() {
         >
           Hello from Faslu
         </a>
+        <label htmlFor="email"></label>
+        <input id="email" type="email" onChange={(e)=> setEmail(e.target.value)}></input>
+        <button onClick={sendEmail}>Send email</button>
         <table>
           <thead>
             <tr>
