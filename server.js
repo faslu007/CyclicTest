@@ -10,7 +10,12 @@ const {
 const server = http.createServer((req, res) => {
   if (req.url === '/api/products' && req.method === 'GET') {
     getProducts(req, res);
-  } else if (req.url.match(/\/api\/products\/\w+/) && req.method === 'GET') {
+  }
+  if (req.url ==="/"){
+    res.writeHead(200, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify({"message": "Welcome to my page"}))
+  }
+  else if (req.url.match(/\/api\/products\/\w+/) && req.method === 'GET') {
     const id = req.url.split('/')[3];
     getProduct(req, res, id);
   } else if (req.url === '/api/products' && req.method === 'POST') {
