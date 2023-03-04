@@ -19,7 +19,7 @@ function App() {
 
   async function getData () {
     try {
-      const response = await axios.get('http://localhost:5000/api/users')
+      const response = await axios.get('/api/users')
       setData(response.data)
     } catch (error) {
       console.error(error)
@@ -29,7 +29,7 @@ function App() {
   async function sendEmail() {
     try {
       const { data } = await axios.post(
-        'http://localhost:5000/api/sendemail',
+        '/api/sendemail',
         { "email": email }, // wrap the email in an object
         {
           headers: {
