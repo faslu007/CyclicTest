@@ -79,7 +79,7 @@ const sendOTP = async (req, res) => {
 
     // Email Template
     const options = {
-      from: "credential-pro@hotmail.com",
+      from: "contact@kl14ecreations.com",
       to: req.body.email,
       subject: "Credential Pro App - Email Verification",
       text: `Your OTP for email verification is ${otp}.`,
@@ -88,16 +88,17 @@ const sendOTP = async (req, res) => {
             <p>Your OTP for email verification is <strong>${otp}</strong>.</p>`
     };
 
-    // Sending email
-    transporter.sendMail(options, function (err, info) {
-      if (err) {
-        console.error(err);
-        res.status(500).json({ error: "Failed to send email" });
-      } else {
-        console.log("Email sent:", info.response);
-        res.status(200).json({ message: "Email sent" });
-      }
-    });
+    new Promise((resolve, reject) => {
+      transporter.sendMail(options, function (error, response) {
+            if (error) {
+              res.status(500).json({ error: error });
+            } else {
+              res.status(200).json({ message: "Email sent" });
+            }
+        });
+})
+
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to send email" });
@@ -105,13 +106,22 @@ const sendOTP = async (req, res) => {
 };
 
 
-// email configuration
-let transporter = nodemailer.createTransport({
-  service: 'hotmail',
+// // email configuration
+// let transporter = nodemailer.createTransport({
+//   service: 'hotmail',
+//   auth: {
+//     user: "credential-pro@hotmail.com", 
+//     pass: "Welcome@123", 
+//   },
+// });
+
+const transporter = nodemailer.createTransport({
+  host: 'smtpout.secureserver.net',
+  port: 465,
   auth: {
-    user: "credential-pro@hotmail.com", 
-    pass: "Welcome@123", 
-  },
+      user: 'contact@kl14ecreations.com',
+      pass: 'Google@12345'
+  }
 });
 
 

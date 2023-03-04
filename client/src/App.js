@@ -2,11 +2,14 @@ import logo from './logo.svg';
 import './App.css';
 import {useEffect, useState} from "react"
 import axios from "axios"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function App() {
   const [data, setData] = useState([]);
   const [email, setEmail] = useState('')
+  
 
   useEffect(()=>{
 
@@ -16,7 +19,7 @@ function App() {
 
   async function getData () {
     try {
-      const response = await axios.get('/api/users')
+      const response = await axios.get('http://localhost:5000/api/users')
       setData(response.data)
     } catch (error) {
       console.error(error)
@@ -26,7 +29,7 @@ function App() {
   async function sendEmail() {
     try {
       const { data } = await axios.post(
-        '/api/sendemail',
+        'http://localhost:5000/api/sendemail',
         { "email": email }, // wrap the email in an object
         {
           headers: {
@@ -34,8 +37,14 @@ function App() {
           }
         }
       );
-      console.log(data);
+      if(data.message && data.message == 'Email sent'){
+        const notify = () => toast("Email sent successfully!");
+        notify();
+        console.log(data)
+      }
     } catch (error) {
+      const notify = () => toast("Error!");
+        notify();
       console.error(error);
     }
   }
@@ -77,6 +86,7 @@ function App() {
           </tbody>
         </table>
       </header>
+      <ToastContainer />
     </div>
   );
 }
